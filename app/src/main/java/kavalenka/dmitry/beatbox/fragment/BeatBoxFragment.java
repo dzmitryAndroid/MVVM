@@ -15,6 +15,7 @@ import java.util.List;
 import kavalenka.dmitry.beatbox.BeatBox;
 import kavalenka.dmitry.beatbox.R;
 import kavalenka.dmitry.beatbox.Sound;
+import kavalenka.dmitry.beatbox.SoundViewModel;
 import kavalenka.dmitry.beatbox.databinding.FragmentBeatBoxBinding;
 import kavalenka.dmitry.beatbox.databinding.ListItemSoundBinding;
 
@@ -59,8 +60,16 @@ public class BeatBoxFragment extends Fragment {
         private SoundHolder(ListItemSoundBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
+            mBinding.setViewModel(new SoundViewModel(mBeatBox));
         }
+
+        public void bind(Sound sound) {
+            mBinding.getViewModel().setSound(sound);
+            mBinding.executePendingBindings();
+        }
+
     }
+
 
     /**
      * ======================================================================ADAPTER======================================================================
@@ -85,7 +94,8 @@ public class BeatBoxFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull SoundHolder holder, int position) {
-
+            Sound sound = mSounds.get(position);
+            holder.bind(sound);
         }
 
         @Override
