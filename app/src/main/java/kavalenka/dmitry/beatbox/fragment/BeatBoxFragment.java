@@ -29,17 +29,19 @@ public class BeatBoxFragment extends Fragment {
 
     public static BeatBoxFragment newInstance() {
 
-//        Bundle args = new Bundle();
+        Bundle args = new Bundle();
 
         BeatBoxFragment fragment = new BeatBoxFragment();
-//        fragment.setArguments(args);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mBeatBox = new BeatBox(getActivity());
+        setRetainInstance(true);
     }
 
     @Override
@@ -48,6 +50,12 @@ public class BeatBoxFragment extends Fragment {
         binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         binding.recyclerView.setAdapter(new SoundAdapter(mBeatBox.getSounds()));
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mBeatBox.release();
     }
 
     /**
